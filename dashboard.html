@@ -44,10 +44,12 @@
     <script>
         const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
+        // Vérifier si l'utilisateur est connecté
         const token = localStorage.getItem('authToken');
         if (!token) {
-            window.location.href = 'login.html';
+            window.location.href = 'login.html';  // Redirection si non authentifié
         } else {
+            // Valider et rafraîchir les données de l'utilisateur
             (async () => {
                 try {
                     const user = await pb.collection('users').authRefresh();
@@ -63,10 +65,11 @@
             })();
         }
 
+        // Gérer la déconnexion
         document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('authToken');
-            pb.authStore.clear();
-            window.location.href = 'login.html';
+            localStorage.removeItem('authToken');  // Supprimer le token JWT
+            pb.authStore.clear();  // Vider les données d'authentification dans PocketBase
+            window.location.href = 'login.html';  // Rediriger vers la page de connexion
         });
     </script>
 

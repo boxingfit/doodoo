@@ -64,8 +64,12 @@
                 const authData = await pb.collection('users').authWithPassword(email, password);
                 document.getElementById('login-message').innerText = 'Logged in successfully!';
                 document.getElementById('login-error').innerText = '';
+
+                // Stocker le token JWT dans le localStorage
                 localStorage.setItem('authToken', authData.token);
-                window.location.href = 'dashboard.html'; // Redirige vers le tableau de bord après connexion
+
+                // Rediriger vers le tableau de bord
+                window.location.href = 'dashboard.html';
             } catch (error) {
                 document.getElementById('login-error').innerText = 'Login failed: ' + error.message;
                 document.getElementById('login-message').innerText = '';
