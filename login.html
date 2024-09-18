@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentication with PocketBase</title>
+    <title>Login - Cashback Service</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,19 +39,8 @@
 </head>
 <body>
 
-    <h1>PocketBase Authentication</h1>
+    <h1>Login to Cashback Service</h1>
 
-    <h2>Sign Up</h2>
-    <form id="signup-form">
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit">Sign Up</button>
-    </form>
-
-    <div id="signup-message" class="message"></div>
-    <div id="signup-error" class="error"></div>
-
-    <h2>Login</h2>
     <form id="login-form">
         <input type="email" id="login-email" placeholder="Email" required />
         <input type="password" id="login-password" placeholder="Password" required />
@@ -65,28 +54,6 @@
     <script>
         const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
-        // Sign Up
-        document.getElementById('signup-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            try {
-                const newUser = await pb.collection('users').create({
-                    email: email,
-                    password: password,
-                    passwordConfirm: password, // Confirmation du mot de passe
-                });
-                document.getElementById('signup-message').innerText = 'User created successfully!';
-                document.getElementById('signup-error').innerText = '';
-            } catch (error) {
-                document.getElementById('signup-error').innerText = 'Error: ' + error.message;
-                document.getElementById('signup-message').innerText = '';
-            }
-        });
-
-        // Login
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -98,8 +65,7 @@
                 document.getElementById('login-message').innerText = 'Logged in successfully!';
                 document.getElementById('login-error').innerText = '';
                 localStorage.setItem('authToken', authData.token);
-                // Optionnel : rediriger après la connexion
-                // window.location.href = '/dashboard.html';
+                window.location.href = 'dashboard.html'; // Redirige vers le tableau de bord après connexion
             } catch (error) {
                 document.getElementById('login-error').innerText = 'Login failed: ' + error.message;
                 document.getElementById('login-message').innerText = '';
