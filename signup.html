@@ -42,9 +42,9 @@
     <h1>Sign Up for Cashback Service</h1>
 
     <form id="signup-form">
-        <input type="email" id="user-email" placeholder="Email" required />
-        <input type="password" id="user-password" placeholder="Password" required />
-        <input type="password" id="user-password-confirm" placeholder="Confirm Password" required />
+        <input type="email" id="signup-email" placeholder="Email" required />
+        <input type="password" id="signup-password" placeholder="Password" required />
+        <input type="password" id="signup-password-confirm" placeholder="Confirm Password" required />
         <button type="submit">Sign Up</button>
     </form>
 
@@ -56,22 +56,28 @@
         const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
         async function signupUser() {
-            const email = document.getElementById('user-email').value;
-            const password = document.getElementById('user-password').value;
-            const passwordConfirm = document.getElementById('user-password-confirm').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const passwordConfirm = document.getElementById('signup-password-confirm').value;
 
+            // Vérification si les mots de passe correspondent
             if (password !== passwordConfirm) {
                 document.getElementById('signup-error').innerText = 'Passwords do not match!';
                 return;
             }
 
+            // Afficher les données dans la console avant de les envoyer
+            console.log('Données envoyées:', { email, password, passwordConfirm });
+
             try {
                 // Créer un nouvel utilisateur avec les champs corrects
                 const newUser = await pb.collection('users').create({
-                    email: user-email,  // Utilise "email" pour l'email
-                    password: user-password,  // Utilise "password" pour le mot de passe
+                    user_email: email,  // Utilise "user_email" pour l'email
+                    user_password: password,  // Utilise "user_password" pour le mot de passe
                     passwordConfirm: passwordConfirm  // Confirmation du mot de passe
                 });
+
+                // Afficher la réponse du backend dans la console
                 console.log('User created:', newUser);
                 document.getElementById('signup-message').innerText = 'Sign Up successful!';
 
@@ -80,14 +86,16 @@
                     window.location.href = '/login.html';
                 }, 2000);
             } catch (error) {
+                // Gérer les erreurs et afficher dans la console
                 console.error('Sign Up failed:', error);
                 document.getElementById('signup-error').innerText = 'Sign Up failed: ' + error.message;
             }
         }
 
+        // Attacher l'événement submit au formulaire
         document.getElementById('signup-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            signupUser();
+            e.preventDefault();  // Empêcher le rechargement de la page
+            signupUser();  // Appeler la fonction d'inscription
         });
     </script>
 
