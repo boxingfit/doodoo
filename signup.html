@@ -53,43 +53,55 @@
 
     <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.14.2/dist/pocketbase.umd.js"></script>
     <script>
-        const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
+    const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
-        async function signupUser() {
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const passwordConfirm = document.getElementById('signup-password-confirm').value;
+    async function signupUser() {
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const passwordConfirm = document.getElementById('signup-password-confirm').value;
 
-            if (password !== passwordConfirm) {
-                document.getElementById('signup-error').innerText = 'Passwords do not match!';
-                return;
-            }
-
-            try {
-                // Créer un nouvel utilisateur avec les champs corrects
-                const newUser = await pb.collection('users').create({
-                    email: email,  // Utilise "email" pour l'email
-                    password: password,  // Utilise "password" pour le mot de passe
-                    passwordConfirm: passwordConfirm  // Confirmation du mot de passe
-                });
-                console.log('User created:', newUser);
-                document.getElementById('signup-message').innerText = 'Sign Up successful!';
-
-                // Rediriger vers la page de connexion après 2 secondes
-                setTimeout(() => {
-                    window.location.href = '/login.html';
-                }, 2000);
-            } catch (error) {
-                console.error('Sign Up failed:', error);
-                document.getElementById('signup-error').innerText = 'Sign Up failed: ' + error.message;
-            }
+        // Vérification si les mots de passe correspondent
+        if (password !== passwordConfirm) {
+            document.getElementById('signup-error').innerText = 'Passwords do not match!';
+            return;
         }
 
-        document.getElementById('signup-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            signupUser();
-        });
-    </script>
+        // Afficher les données dans la console avant de les envoyer
+        console.log('Données envoyées:', { user_email: email, user_password: password, passwordConfirm });
+
+        try {
+            // Créer un nouvel utilisateur avec les champs corrects
+            const newUser = await pb.collection('users').create({
+                user_email: email,  // Utilise "user_email" pour l'email
+                user_password: password,  // Utilise "user_password" pour le mot de passe
+                passwordConfirm: passwordConfirm  // Confirmation du mot de passe
+            });
+
+            // Afficher la réponse du backend dans la console
+            console.log('User created:', newUser);
+            document.getElementById('signup-message').innerText = 'Sign Up successful!';
+
+            // Rediriger vers la page de connexion après 2 secondes
+            setTimeout(() => {
+                window.location.href = '/login.html';
+            }, 2000);
+        } catch (error) {
+            // Gérer les erreurs et afficher dans la console
+            console.error('Sign Up failed:', error);
+            document.getElementById('signup-error').innerText = 'Sign Up failed: ' + error.message;
+
+            // Afficher les détails de l'erreur pour aider au diagnostic
+            console.log('Erreur complète:', error);
+        }
+    }
+
+    // Attacher l'événement submit au formulaire
+    document.getElementById('signup-form').addEventListener('submit', (e) => {
+        e.preventDefault();  // Empêcher le rechargement de la page
+        signupUser();  // Appeler la fonction d'inscription
+    });
+</script>
+
 
 </body>
 </html>
