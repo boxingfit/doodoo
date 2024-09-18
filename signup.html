@@ -59,10 +59,10 @@
             const password = document.getElementById('signup-password').value;
 
             try {
-                // Créer un nouvel utilisateur dans la collection d'authentification
+                // Créer un nouvel utilisateur avec les bons champs
                 const newUser = await pb.collection('users').create({
-                    email: email,  // Utilise les bons champs (ici, email)
-                    password: password,  // Utilise "password" pour PocketBase (pas de "user_password")
+                    user_email: email,  // Utiliser "user_email" comme spécifié dans l'erreur
+                    user_password: password,  // Utiliser "user_password" comme spécifié dans l'erreur
                     passwordConfirm: password  // Confirmation du mot de passe
                 });
                 console.log('User created:', newUser);
