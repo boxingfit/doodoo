@@ -42,9 +42,9 @@
     <h1>Sign Up for Cashback Service</h1>
 
     <form id="signup-form">
-        <input type="email" id="signup-email" placeholder="Email" required />
-        <input type="password" id="signup-password" placeholder="Password" required />
-        <input type="password" id="signup-password-confirm" placeholder="Confirm Password" required />
+        <input type="email" id="user-email" placeholder="Email" required />
+        <input type="password" id="user-password" placeholder="Password" required />
+        <input type="password" id="user-password-confirm" placeholder="Confirm Password" required />
         <button type="submit">Sign Up</button>
     </form>
 
@@ -56,9 +56,9 @@
         const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
         async function signupUser() {
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const passwordConfirm = document.getElementById('signup-password-confirm').value;
+            const email = document.getElementById('user-email').value;
+            const password = document.getElementById('user-password').value;
+            const passwordConfirm = document.getElementById('user-password-confirm').value;
 
             if (password !== passwordConfirm) {
                 document.getElementById('signup-error').innerText = 'Passwords do not match!';
@@ -68,8 +68,8 @@
             try {
                 // Créer un nouvel utilisateur avec les champs corrects
                 const newUser = await pb.collection('users').create({
-                    email: email,  // Utilise "email" pour l'email
-                    password: password,  // Utilise "password" pour le mot de passe
+                    email: user-email,  // Utilise "email" pour l'email
+                    password: user-password,  // Utilise "password" pour le mot de passe
                     passwordConfirm: passwordConfirm  // Confirmation du mot de passe
                 });
                 console.log('User created:', newUser);
