@@ -72,8 +72,8 @@
             try {
                 // Créer un nouvel utilisateur avec les champs corrects
                 const newUser = await pb.collection('users').create({
-                    useremail: email,  // Utilise "user_email" pour l'email
-                    userpassword: password,  // Utilise "user_password" pour le mot de passe
+                    email: email,  // Utilise "user_email" pour l'email
+                    password: password,  // Utilise "user_password" pour le mot de passe
                     passwordConfirm: passwordConfirm  // Confirmation du mot de passe
                 });
 
