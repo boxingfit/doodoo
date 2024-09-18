@@ -54,26 +54,28 @@
     <script>
         const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
+        async function loginUser() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
             try {
                 const authData = await pb.collection('users').authWithPassword(email, password);
-                document.getElementById('login-message').innerText = 'Logged in successfully!';
-                document.getElementById('login-error').innerText = '';
+                console.log('Logged in:', authData);
 
-                // Stocker le token JWT dans le localStorage
+                // Stocker le token JWT pour les futures requêtes
                 localStorage.setItem('authToken', authData.token);
 
-                // Rediriger vers le tableau de bord
-                window.location.href = 'dashboard.html';
+                // Rediriger vers le tableau de bord ou une autre page
+                window.location.href = '/dashboard.html';
             } catch (error) {
+                console.error('Login failed:', error);
                 document.getElementById('login-error').innerText = 'Login failed: ' + error.message;
-                document.getElementById('login-message').innerText = '';
             }
+        }
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            loginUser();
         });
     </script>
 
