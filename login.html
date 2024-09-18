@@ -65,7 +65,7 @@
                 // Stocker le token JWT pour les futures requêtes
                 localStorage.setItem('authToken', authData.token);
 
-                // Rediriger vers le tableau de bord ou une autre page
+                // Rediriger vers le tableau de bord
                 window.location.href = '/dashboard.html';
             } catch (error) {
                 console.error('Login failed:', error);

@@ -44,7 +44,6 @@
     <script>
         const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
-        // Vérifier si l'utilisateur est connecté
         const token = localStorage.getItem('authToken');
         if (!token) {
             window.location.href = 'login.html';  // Redirection si non authentifié
