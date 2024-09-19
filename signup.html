@@ -70,7 +70,8 @@
                 // Créer un nouvel utilisateur dans la collection "users"
                 const newUser = await pb.collection('users').create({
                     email: email,
-                    password: password
+                    password: password,
+                    passwordConfirm : passwordConfirm
                 });
 
                 console.log('User created:', newUser);
