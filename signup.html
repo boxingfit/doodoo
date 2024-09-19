@@ -29,7 +29,7 @@
 
     <script>
         // Initialize PocketBase client
-        const pb = new PocketBase('https://pearl-angelfish.pikapod.net/');
+        const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
         // Get form and message elements
         const form = document.getElementById('signup-form');
@@ -47,21 +47,27 @@
             // Clear previous messages
             message.textContent = '';
 
-            // Basic validation
+            // Basic validation before loading the data into record
             if (!email || !password || password !== passwordConfirm) {
                 message.textContent = 'Email or password is invalid, or passwords do not match.';
                 return;
             }
 
             try {
-                // Create a new record for the "users" collection
+                // Create a new user record
                 const userRecord = new pb.collection('users').create();
 
-                // Set email and password fields
-                userRecord.set("email", email);
+                // Load form data into the record
+                const data = {
+                    email: email,
+                    password: password,
+                    passwordConfirm: passwordConfirm
+                };
+                userRecord.load(data);
+
+                // Set the password and validate it
                 userRecord.setPassword(password);
 
-                // Validate password (optional, depends on your PocketBase config)
                 if (!userRecord.validatePassword(password)) {
                     message.textContent = 'Password does not meet the requirements.';
                     return;
