@@ -3,71 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <!-- Include the PocketBase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.14.2/dist/pocketbase.umd.js"></script>
+    <title>Sign Up - Cashback Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin: 20px 0;
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Sign Up</h1>
-    
-    <!-- Signup form -->
+    <h1>Sign Up for Cashback Service</h1>
+
     <form id="signup-form">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <label for="passwordConfirm">Confirm Password:</label>
-        <input type="password" id="passwordConfirm" name="passwordConfirm" required><br><br>
-
+        <input type="email" id="signup-email" placeholder="Email" required />
+        <input type="password" id="signup-password" placeholder="Password" required />
+        <input type="password" id="signup-password-confirm" placeholder="Confirm Password" required />
         <button type="submit">Sign Up</button>
     </form>
 
-    <p id="message"></p>
+    <div id="signup-message" class="message"></div>
+    <div id="signup-error" class="error"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.14.2/dist/pocketbase.umd.js"></script>
     <script>
-        // Initialize PocketBase client
         const pb = new PocketBase('https://pearl-angelfish.pikapod.net');
 
-        // Get form and message elements
-        const form = document.getElementById('signup-form');
-        const message = document.getElementById('message');
+        async function signupUser() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const passwordConfirm = document.getElementById('signup-password-confirm').value;
 
-        // Form submission event listener
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            // Get form values
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const passwordConfirm = document.getElementById('passwordConfirm').value;
-
-            // Clear previous messages
-            message.textContent = '';
-
-            // Basic validation before submitting the form
-            if (!email || !password || password !== passwordConfirm) {
-                message.textContent = 'Email or password is invalid, or passwords do not match.';
+            if (password !== passwordConfirm) {
+                document.getElementById('signup-error').innerText = 'Passwords do not match!';
                 return;
             }
 
             try {
-                // Create a new user using the default email and password fields
+                // Créer un nouvel utilisateur avec les champs corrects
                 const newUser = await pb.collection('users').create({
-                    email: email,
-                    password: password,
-                    passwordConfirm: passwordConfirm
+                    email: email,  // Utilise "email" pour l'email
+                    password: password,  // Utilise "password" pour le mot de passe
+                    passwordConfirm: passwordConfirm  // Confirmation du mot de passe
                 });
+                console.log('User created:', newUser);
+                document.getElementById('signup-message').innerText = 'Sign Up successful!';
 
-                // Success message
-                message.textContent = 'Signup successful!';
-
+                // Rediriger vers la page de connexion après 2 secondes
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 2000);
             } catch (error) {
-                console.error('Signup failed:', error);
-                message.textContent = `Signup failed: ${error.message}`;
+                console.error('Sign Up failed:', error);
+                document.getElementById('signup-error').innerText = 'Sign Up failed: ' + error.message;
             }
+        }
+
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            signupUser();
         });
     </script>
 
