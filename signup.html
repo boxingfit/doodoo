@@ -69,8 +69,8 @@
             try {
                 // Créer un nouvel utilisateur dans la collection "users"
                 const newUser = await pb.collection('users').create({
-                    user_email: email,
-                    user_password: password
+                    email: email,
+                    password: password
                 });
 
                 console.log('User created:', newUser);
