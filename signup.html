@@ -47,35 +47,20 @@
             // Clear previous messages
             message.textContent = '';
 
-            // Basic validation before loading the data into record
+            // Basic validation before submitting the form
             if (!email || !password || password !== passwordConfirm) {
                 message.textContent = 'Email or password is invalid, or passwords do not match.';
                 return;
             }
 
             try {
-                // Create a new user record
-                const userRecord = new pb.collection('users').create();
-
-                // Load form data into the record
-                const data = {
+                // Create a new user using the default email and password fields
+                const newUser = await pb.collection('users').create({
                     email: email,
                     password: password,
                     passwordConfirm: passwordConfirm
-                };
-                userRecord.load(data);
+                });
 
-                // Set the password and validate it
-                userRecord.setPassword(password);
-
-                if (!userRecord.validatePassword(password)) {
-                    message.textContent = 'Password does not meet the requirements.';
-                    return;
-                }
-
-                // Save the user record (with validation)
-                await pb.collection('users').saveRecord(userRecord);
-                
                 // Success message
                 message.textContent = 'Signup successful!';
 
